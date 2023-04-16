@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1>Hello World</h1>.
-
-
-
-
-
-
+<h1>Hello World</h1>
 <input type="text" id="numberInput" />
+<img id="image" src="https://i.imgur.com/4NQgcWL.png" />
 <script>
 var input = document.getElementById("numberInput");
+var image = document.getElementById("image");
 input.addEventListener("input", function() {
-  //var number = this.value;
-  //var image = images[number];
-  if (input == "1") {
-    document.getElementById("image").src = "https://i.imgur.com/4NQgcWL.png";
+  var number = this.value;
+  if (number === "1") {
+    image.src = "https://i.imgur.com/4NQgcWL.png";
   }
-  if (input == "2") {
-    document.getElementById("image").src = "https://i.imgur.com/fnSBVUn.png";
+  else if (number === "2") {
+    image.src = "https://i.imgur.com/fnSBVUn.png";
   }
 });
-</script>>
-
-<img id="image" />
-
+</script>
 </body>
 </html>

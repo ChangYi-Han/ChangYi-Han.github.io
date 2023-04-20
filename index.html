@@ -1,44 +1,66 @@
 <!DOCTYPE html>
 <html>
 <body>
-
-
+<!-- 加入一個標籤用於顯示 field1 值 -->
+<p>Field1: <span id="field1Value"></span></p>
+<!-- 用於輸入 field1 值的文本框 -->
 <input type="text" id="number1Input" />
-
+<!-- 根據 field1 值顯示不同的圖片 -->
 <img id="image" src="https://i.imgur.com/4NQgcWL.png" />
-</body>
 <script>
 var input = document.getElementById("number1Input");
 var image = document.getElementById("image");
-input.addEventListener("input", function() {
-  var number = this.value;
+var field1Value = document.getElementById("field1Value");
+
+// 呼叫 function 每 10 秒更新 field1 值
+setInterval(getData, 10000);
+
+function getData() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://api.thingspeak.com/channels/2096127/fields/1/last", true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+      // 解析 JSON 格式的回應
+      var response = JSON.parse(this.responseText);
+      // 更新 field1 值到頁面上
+      field1Value.textContent = response.field1;
+      // 根據 field1 值更新圖片
+      if (response.field1 === "1") {
+        image.src = "https://i.imgur.com/4NQgcWL.png";
+      } else if (response.field1 === "2") {
+        image.src = "https://i.imgur.com/fnSBVUn.png";
+      }
+    }
+  };
+  xhr.send();
+}
+
+// 監聽 number1Input 的輸入事件，每次輸入就呼叫一次 updateImage 函數
+input.addEventListener("input", updateImage);
+
+function updateImage() {
+  var number = input.value;
   if (number === "1") {
     image.src = "https://i.imgur.com/4NQgcWL.png";
   }
   else if (number === "2") {
     image.src = "https://i.imgur.com/fnSBVUn.png";
   }
-});
+}
 </script>
 <style>
 body {
   background-image: url("https://i.imgur.com/WzaNYJz.jpg");
-  
-  
   background-repeat: no-repeat;
   background-size: 100% 200%;
-  
-
-	height: 100%;
-	margin: 0;
-	padding: 0;
-
-  }
-
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 img {
-width: 400px;
-height: 400px;
+  width: 400px;
+  height: 400px;
 }
 </style>
-
+</body>
 </html>
